@@ -33,16 +33,14 @@ public class Car : MonoBehaviour
                 , out hit, 1000, LayerMask.GetMask("Border")))
             {
                 Debug.DrawLine(transform.position, hit.point, Color.white);
-                inp[i] = Mathf.Clamp(hit.distance, 0f, 10) / 5d;
+                inp[i] = 1d / hit.distance;
             }
         }
         network.SetInp(inp);
         network.CalcNeurons();
         var outp = network.GetOutp();
-        //transform.position += transform.forward * Time.fixedDeltaTime * (3f + (float)outp[1] * 3f);
         transform.position += transform.forward * Time.fixedDeltaTime * GameController.instance.carSpeed;
-        float calcA = (float)(outp[0] - 0.5);
-        transform.eulerAngles += new Vector3(0, calcA * 20f, 0);
+        transform.eulerAngles += new Vector3(0, (float)(outp[0] - 0.5) * 20f, 0);
     }
     private void OnTriggerEnter(Collider other)
     {

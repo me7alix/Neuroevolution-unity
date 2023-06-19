@@ -6,20 +6,20 @@ public class NeuralNetwork
 {
     public double[][] neurons;
     public double[][][] weights;
-    public double[][] bies;
+    public double[][] biases;
     private int[] layers;
     private Random r;
     public NeuralNetwork(int[] layers)
     {
         this.layers = layers;
         r = new Random(DateTime.Now.Millisecond);
-        bies = new double[layers.Length][];
+        biases = new double[layers.Length][];
         weights = new double[layers.Length][][];
         neurons = new double[layers.Length][];
         for(int i = 0; i < layers.Length; i++)
         {
             neurons[i] = new double[layers[i]];
-            bies[i] = new double[layers[i]];
+            biases[i] = new double[layers[i]];
             if (i != 0)
             {
                 weights[i] = new double[layers[i]][];
@@ -45,7 +45,7 @@ public class NeuralNetwork
                     res += neurons[i - 1][k] * weights[i][j][k];
                 }
                 //The neural network works both with bias and without it
-                res += bies[i][j];
+                res += biases[i][j];
                 neurons[i][j] = Sigm(res);
             }
         }
@@ -60,7 +60,7 @@ public class NeuralNetwork
                 {
                     weights[i][j][k] = (r.NextDouble()-0.5d) * 2d * randW;
                 }
-                bies[i][j] = (r.NextDouble() - 0.5d) * 2d * randB;
+                biases[i][j] = (r.NextDouble() - 0.5d) * 2d * randB;
             }
         }
     }
@@ -75,7 +75,7 @@ public class NeuralNetwork
                 {
                     n.weights[i][j][k] = weights[i][j][k] + (r.NextDouble() - 0.5d) * 2d * randW;
                 }
-                n.bies[i][j] = bies[i][j] + (r.NextDouble() - 0.5d) * 2d * randB;
+                n.biases[i][j] = biases[i][j] + (r.NextDouble() - 0.5d) * 2d * randB;
             }
         }
         return n;
